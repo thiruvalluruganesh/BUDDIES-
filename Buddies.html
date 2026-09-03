@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#fff7f0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Buddies" />
+    <meta name="description" content="Save your favorite memories with your crew." />
+    <title>Buddies — Your friendship memory space</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-frame">
+      <header class="site-header app-header">
+        <a class="brand" href="#" aria-label="Buddies home">
+          <span class="brand-mark">B</span>
+          <span>BUDDIES</span>
+        </a>
+
+        <div class="header-actions">
+          <span class="memory-count" id="memoryCount">0 moments</span>
+          <button class="icon-button ai-button" id="aiAssistantButton" type="button" aria-label="AI Buddy assistant" title="Get pose ideas">
+            ✨
+          </button>
+          <button class="icon-button" id="themeButton" type="button" aria-label="Toggle theme">
+            ☼
+          </button>
+        </div>
+      </header>
+
+      <main class="app-content" id="appContent">
+        <div class="pull-indicator" id="pullIndicator" aria-hidden="true">
+          <div class="pull-spinner"></div>
+          <span>Pull to refresh</span>
+        </div>
+
+        <div class="view active" id="homeView">
+          <section class="hero">
+            <div>
+              <p class="eyebrow">Your friendship memory space</p>
+              <h1>Keep the moments<br /><em>with your buddies.</em></h1>
+              <p class="hero-copy">
+                Save your favorite memories with your crew — inside jokes, trips, late nights, and all the good stuff.
+              </p>
+            </div>
+
+            <div class="hero-decoration" aria-hidden="true">
+              <span class="sparkle sparkle-one">✦</span>
+              <span class="sparkle sparkle-two">✦</span>
+              <div class="orb"></div>
+            </div>
+          </section>
+
+          <section class="albums-section" aria-labelledby="albumsHeading">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Organize</p>
+                <h2 id="albumsHeading">Buddy albums</h2>
+              </div>
+              <button class="text-button hidden" id="showAllButton" type="button">Show all</button>
+            </div>
+            <div class="album-grid" id="albumGrid"></div>
+          </section>
+
+          <section class="gallery-section" aria-labelledby="homeGalleryHeading">
+            <div class="section-heading gallery-heading">
+              <div>
+                <p class="eyebrow">Recent</p>
+                <h2 id="homeGalleryHeading">Latest memories</h2>
+              </div>
+              <button class="text-button" id="viewAllMemoriesButton" type="button">View all</button>
+            </div>
+            <div class="gallery" id="homeGallery"></div>
+            <div class="empty-state" id="homeEmptyState">
+              <div class="empty-icon">✧</div>
+              <h3>Your buddy story starts here</h3>
+              <p>Tap the + button to save your first photo.</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="view" id="createView">
+          <section class="creator-card" aria-labelledby="createHeading">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Create a buddy moment</p>
+                <h2 id="createHeading">Capture a vibe</h2>
+              </div>
+              <span class="step-label">01 / 01</span>
+            </div>
+
+            <div class="upload-area" id="uploadArea">
+              <input id="photoInput" type="file" accept="image/*" hidden />
+              <div class="upload-placeholder" id="uploadPlaceholder">
+                <div class="upload-icon">↥</div>
+                <h3>Drop a buddy photo here</h3>
+                <p>or grab one from your camera roll</p>
+                <div class="upload-buttons">
+                  <button class="primary-button" id="choosePhotoButton" type="button">Choose photo</button>
+                  <button class="secondary-button" id="cameraButton" type="button">Take a selfie</button>
+                </div>
+              </div>
+
+              <div class="photo-editor hidden" id="photoEditor">
+                <div class="preview-wrap">
+                  <img id="photoPreview" alt="Selected buddy preview" />
+                  <button class="remove-photo" id="removePhotoButton" type="button" aria-label="Remove selected photo">×</button>
+                </div>
+
+                <div class="editor-controls">
+                  <div>
+                    <p class="control-label">Choose a filter</p>
+                    <div class="filter-list" id="filterList"></div>
+                  </div>
+
+                  <div>
+                    <p class="control-label">Choose an album</p>
+                    <div class="album-list" id="albumList"></div>
+                  </div>
+
+                  <div>
+                    <p class="control-label">Set a vibe</p>
+                    <div class="mood-list" id="moodList"></div>
+                  </div>
+
+                  <div>
+                    <p class="control-label">Tag exact location <small>(optional)</small></p>
+                    <div class="location-field">
+                      <input id="locationInput" type="text" placeholder="e.g. Central Park, NYC" autocomplete="off" />
+                      <button class="secondary-button location-button" id="useLocationButton" type="button" title="Use my exact location">📍 Locate</button>
+                      <button class="secondary-button" id="openMapButton" type="button" title="Open in Google Maps">🗺️</button>
+                    </div>
+                    <div class="location-status hidden" id="locationStatus"></div>
+                  </div>
+
+                  <label class="caption-label" for="captionInput">
+                    <span class="control-label">Add a note <small>(optional)</small></span>
+                    <textarea id="captionInput" maxlength="140" placeholder="What made this moment awesome?"></textarea>
+                    <span class="character-count"><span id="characterCount">0</span>/140</span>
+                  </label>
+
+                  <button class="save-button" id="saveMemoryButton" type="button">
+                    Save this moment <span>↗</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="view" id="memoriesView">
+          <section class="gallery-section" aria-labelledby="galleryHeading">
+            <div class="section-heading gallery-heading">
+              <div>
+                <p class="eyebrow" id="galleryEyebrow">Your collection</p>
+                <h2 id="galleryHeading">Buddy memories</h2>
+              </div>
+              <div class="heading-actions">
+                <button class="text-button hidden" id="favoritesButton" type="button">♥ Favorites</button>
+                <button class="text-button hidden" id="clearAllButton" type="button">Clear all</button>
+              </div>
+            </div>
+
+            <div class="gallery-toolbar">
+              <div class="search-wrap">
+                <input id="searchInput" type="search" placeholder="Search buddy moments..." autocomplete="off" />
+              </div>
+              <button class="text-button" id="surpriseButton" type="button">✦ Surprise me</button>
+            </div>
+
+            <div class="gallery" id="gallery"></div>
+            <div class="empty-state hidden" id="emptyState">
+              <div class="empty-icon">✧</div>
+              <h3>Your buddy story starts here</h3>
+              <p>Save your first photo above and it will appear in this collection.</p>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <button class="fab" id="createFab" type="button" aria-label="Create new moment">
+        <span>+</span>
+      </button>
+
+      <nav class="bottom-nav" aria-label="App navigation">
+        <button class="nav-item active" data-view="home" type="button">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" data-view="create" type="button">
+          <span class="nav-icon">➕</span>
+          <span class="nav-label">Create</span>
+        </button>
+        <button class="nav-item" data-view="memories" type="button">
+          <span class="nav-icon">🖼️</span>
+          <span class="nav-label">Memories</span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <dialog class="lightbox" id="lightbox">
+      <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Close preview">×</button>
+      <button class="lightbox-download" id="lightboxDownload" type="button" aria-label="Download memory" title="Download">↓</button>
+      <img id="lightboxImage" alt="Memory preview" />
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+      <div class="lightbox-meta" id="lightboxMeta"></div>
+      <div class="lightbox-social" id="lightboxSocial"></div>
+      <div class="comments-section" id="commentsSection">
+        <h4>💬 Buddy comments</h4>
+        <div class="comments-list" id="commentsList"></div>
+        <div class="comment-form">
+          <input id="commentInput" type="text" placeholder="Add a friendly comment..." maxlength="200" autocomplete="off" />
+          <button class="primary-button" id="addCommentButton" type="button">Post</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="ai-dialog" id="aiDialog">
+      <button class="ai-close" id="aiClose" type="button" aria-label="Close assistant">×</button>
+      <div class="ai-header">
+        <div class="ai-avatar">
+          <span>✨</span>
+          <span class="ai-pulse"></span>
+        </div>
+        <div>
+          <h3>AI Buddy</h3>
+          <p>Smart pose ideas for your next memory</p>
+        </div>
+      </div>
+
+      <div class="ai-body">
+        <p class="ai-label">Pick a vibe or describe your situation</p>
+        <div class="ai-chips" id="aiChips"></div>
+
+        <div class="ai-input-wrap">
+          <input id="aiSituationInput" type="text" placeholder="e.g., beach sunset, house party, hiking..." maxlength="80" autocomplete="off" />
+          <button class="primary-button" id="aiSuggestButton" type="button">Suggest pose</button>
+        </div>
+
+        <div class="ai-suggestion hidden" id="aiSuggestion">
+          <div class="ai-pose-emoji" id="aiPoseEmoji">📸</div>
+          <h4 id="aiPoseTitle">Pose title</h4>
+          <p id="aiPoseDescription">Pose description goes here.</p>
+          <div class="ai-pose-tags" id="aiPoseTags"></div>
+          <button class="secondary-button" id="aiTryAgainButton" type="button">↻ Try another</button>
+        </div>
+      </div>
+    </dialog>
+
+    <canvas class="confetti" id="confettiCanvas" aria-hidden="true"></canvas>
+
+    <script src="script.js"></script>
+  </body>
+                        </html>
